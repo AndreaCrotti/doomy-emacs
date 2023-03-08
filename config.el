@@ -74,3 +74,76 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+(defun set-font-with-size (size)
+  (set-frame-font
+   (format "-CTDB-Fira Code-normal-normal-normal-*-%s-*-*-*-m-0-iso10646-1"
+           size)))
+
+(defun set-font-size (&optional _)
+  (interactive)
+  (let ((new-size
+         (cond
+          ;; external 1k monitor
+          ((equal 1920 (x-display-pixel-width)) 12)
+          ;; internal 4k monitor
+          ((equal 3840 (x-display-pixel-width)) 28)
+          ;; external 4k monitor
+          ((equal 7680 (x-display-pixel-width)) 18)
+          (t 24))))
+
+    (message "changing the font size to %s" new-size)
+    (set-font-with-size new-size)))
+
+;; not seems to do exactly what needed really, not just called when moving to a different monitor
+;; (add-hook 'window-size-change-functions 'set-font-size)
+(set-font-size)
+
+(global-subword-mode 1)
+
+(add-hook! 'text-mode (lambda () (auto-revert-mode 1)))
+
+(add-to-list 'default-frame-alist '(inhibit-double-buffering . t))
+
+(defun bury-compile-buffer-if-successful (buffer string)
+  "Bury a compilation buffer if succeeded without warnings "
+  (when (and (eq major-mode 'comint-mode)
+             (string-match "finished" string)
+             (not
+              (with-current-buffer buffer
+                (search-forward "warning" nil t))))
+    (run-with-timer 1 nil
+                    (lambda (buf)
+                      (let ((window (get-buffer-window buf)))
+                        (when (and (window-live-p window)
+                                   (eq buf (window-buffer window)))
+                          (delete-window window))))
+                    buffer)))
+
+(add-hook 'compilation-finish-functions #'bury-compile-buffer-if-successful)
+
+(setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
+
+(setq forge-owned-accounts '(("AndreaCrotti")))
+
+;; (setq-hook! org-mode
+;;   prettify-symbols-alist '(("#+end_quote" . "”")
+;;                            ("#+END_QUOTE" . "”")
+;;                            ("#+begin_quote" . "“")
+;;                            ("#+BEGIN_QUOTE" . "“")
+;;                            ("#+end_src" . "«")
+;;                            ("#+END_SRC" . "«")
+;;                            ("#+begin_src" . "»")
+;;                            ("#+BEGIN_SRC" . "»")
+;;                            ("#+name:" . "»")
+;;                            ("#+NAME:" . "»")))
+
+(setq display-line-numbers-type 'relative)
+
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; (package! visual-fill-column)

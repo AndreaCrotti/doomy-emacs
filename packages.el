@@ -7,7 +7,6 @@
 
 ;; (require 'use-package)
 (package! dracula-theme)
-(package! forge)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
