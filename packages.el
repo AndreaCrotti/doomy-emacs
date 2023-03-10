@@ -63,3 +63,40 @@
 ;;         org-roam-ui-follow t
 ;;         org-roam-ui-update-on-save t
 ;;         org-roam-ui-open-on-start t))
+
+
+(package! git-auto-commit-mode)
+
+(package! kaocha-runner)
+
+(package! imenu-anywhere)
+
+(package! log4j-mode)
+
+(package! eredis)
+
+(package! redis)
+
+(package! tldr)
+
+(package! citar)
+
+(package! posframe)
+
+(package! toml-mode)
+
+(package! wordnut)
+
+(package! vega-view)
+
+(package! nyan-mode)
+
+(package! wakatime-mode)
+
+;; (package! browse-kill-ring)
+
+(package! command-log-mode)
+
+(package! rg)
+
+(package! org-roam-ui)

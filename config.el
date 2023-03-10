@@ -3,6 +3,36 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;; helper functions
+(defun portal.api/open ()
+  (interactive)
+  (cider-nrepl-sync-request:eval
+   "(do (ns dev) (def portal ((requiring-resolve 'portal.api/open) {:theme :portal.colors/solarized-dark})) (add-tap (requiring-resolve 'portal.api/submit)))"))
+
+(defun portal.api/clear ()
+  (interactive)
+  (cider-nrepl-sync-request:eval "(portal.api/clear)"))
+
+(defun portal.api/close ()
+  (interactive)
+  (cider-nrepl-sync-request:eval "(portal.api/close)"))
+
+(defun ca-next-defun ()
+  (interactive)
+  (end-of-defun 2)
+  (beginning-of-defun 1))
+
+(defun ca-prev-defun ()
+  (interactive)
+  (beginning-of-defun))
+
+(defun vpn-up ()
+  (interactive)
+  (async-shell-command "sudo systemctl start wg-quick@vpn"))
+
+(defun vpn-down ()
+  (interactive)
+  (async-shell-command "sudo systemctl stop wg-quick@vpn"))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -40,7 +70,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/RoamNotes/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -80,24 +110,25 @@
    (format "-CTDB-Fira Code-normal-normal-normal-*-%s-*-*-*-m-0-iso10646-1"
            size)))
 
-(defun set-font-size (&optional _)
-  (interactive)
-  (let ((new-size
-         (cond
-          ;; external 1k monitor
-          ((equal 1920 (x-display-pixel-width)) 12)
-          ;; internal 4k monitor
-          ((equal 3840 (x-display-pixel-width)) 28)
-          ;; external 4k monitor
-          ((equal 7680 (x-display-pixel-width)) 18)
-          (t 24))))
+(when (display-graphic-p)
+  (defun set-font-size (&optional _)
+    (interactive)
+    (let ((new-size
+           (cond
+            ;; external 1k monitor
+            ((equal 1920 (x-display-pixel-width)) 12)
+            ;; internal 4k monitor
+            ((equal 3840 (x-display-pixel-width)) 28)
+            ;; external 4k monitor
+            ((equal 7680 (x-display-pixel-width)) 18)
+            (t 24))))
 
-    (message "changing the font size to %s" new-size)
-    (set-font-with-size new-size)))
+      (message "changing the font size to %s" new-size)
+      (set-font-with-size new-size)))
 
-;; not seems to do exactly what needed really, not just called when moving to a different monitor
-;; (add-hook 'window-size-change-functions 'set-font-size)
-(set-font-size)
+  ;; not seems to do exactly what needed really, not just called when moving to a different monitor
+  ;; (add-hook 'window-size-change-functions 'set-font-size)
+  (set-font-size))
 
 (global-subword-mode 1)
 
@@ -147,3 +178,133 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; (package! visual-fill-column)
+
+(setq gac-custom-interval 0.5)
+
+(use-package projectile
+  :diminish projectile
+  :config
+  (projectile-global-mode)
+  :bind (("<f6>" . projectile-ripgrep)
+         ("C-<f6>" . projectile-replace)
+         ("<f7>" . projectile-find-file)
+         ("<f8>" . projectile-run-shell)
+         ("<f9>" . projectile-command-map)
+         :map projectile-mode-map
+         ("s-d" . projectile-find-dir)
+         ("s-p" . projectile-switch-project)
+         ("s-f" . projectile-find-file)
+         ("s-a" . projectile-ag))
+  :custom
+  (projectile-completion-system 'default)
+  (projectile-switch-project-action 'projectile-find-file))
+
+(use-package smartparens
+  :config
+  (smartparens-global-mode nil)
+  (smartparens-global-strict-mode t)
+  :bind
+  (("C-M-f" . sp-forward-sexp)
+   ("C-M-b" . sp-backward-sexp)
+   ("C-M-d" . sp-down-sexp)
+   ("C-M-a" . sp-backward-down-sexp)
+   ("C-M-e" . sp-up-sexp)
+   ("C-M-u" . sp-backward-up-sexp)
+   ("C-M-t" . sp-transpose-sexp)
+   ("C-M-n" . sp-next-sexp)
+   ("C-M-p" . sp-previous-sexp)
+   ("C-M-k" . sp-kill-sexp)
+   ("C-M-w" . sp-copy-sexp)
+   ("C-<right>" . sp-forward-slurp-sexp)
+   ("C-<left>" . sp-forward-barf-sexp)
+   ("C-]" . sp-select-next-thing-exchange)
+   ("C-<left_bracket>" . sp-select-previous-thing)
+   ("C-M-]" . sp-select-next-thing)
+   ("M-F" . sp-forward-symbol)
+   ("M-B" . sp-backward-symbol)))
+
+(use-package windmove
+  :init (windmove-default-keybindings 'shift))
+
+(use-package autorevert
+  :config
+  (setq auto-revert-interval 1)
+  (global-auto-revert-mode))
+
+(global-set-key (kbd "M-p") 'ca-prev-defun)
+(global-set-key (kbd "M-n") 'ca-next-defun)
+
+;; (use-package browse-kill-ring
+;;   :config
+;;   (browse-kill-ring-default-keybindings))
+
+(use-package cider
+  :bind (("C-<f5>" . cider-test-run-test))
+  :config
+  (setq cider-font-lock-dynamically '(macro core function var)
+        nrepl-hide-special-buffers t
+
+        cider-overlays-use-font-lock t)
+  :custom
+  (cider-prompt-for-symbol nil)
+  (cider-repl-display-help-banner nil)
+  (cider-repl-pop-to-buffer-on-connect 'display-only)
+  (cider-repl-display-in-current-window nil)
+  (cider-repl-use-clojure-font-lock t)
+  (cider-repl-use-pretty-printing t)
+  (cider-repl-prompt-function 'cider-repl-prompt-abbreviated)
+  (cider-repl-tab-command #'indent-for-tab-command)
+  (cider-repl-buffer-size-limit 100000)
+  (cider-repl-require-ns-on-set nil)
+  (nrepl-log-messages t)
+  (cider-auto-test-mode t))
+
+(use-package neil
+  :custom
+  (neil-inject-dep-to-project-p t))
+
+(use-package clojure-mode
+  :mode (("\\.clj\\'" . clojure-mode)
+         ("\\.edn\\'" . clojure-mode))
+  :bind
+  (("C-c l" . lsp-clojure-refactor-menu/body))
+  :init
+  (add-hook 'clojure-mode-hook #'subword-mode))
+
+(use-package company
+  :init (global-company-mode)
+  :custom
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.1)
+  (company-show-numbers t))
+
+(use-package org-roam
+  :after org
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory (file-truename "~/RoamNotes"))
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n d" . org-roam-dailies-goto-today)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n c" . org-roam.capture)
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-setup)
+  (require 'org-roam-protocol))
+
+(use-package org-roam-ui
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+(global-set-key [f1] 'delete-window)
+(global-set-key [f2] 'split-window-horizontally)
+
+(global-unset-key (kbd "C-z"))
