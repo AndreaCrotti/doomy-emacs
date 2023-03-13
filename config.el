@@ -251,6 +251,95 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
+(defhydra lsp-clojure-refactor-menu (:color blue :hint nil)
+  "
+Threading                      Code Manip                      Namespace                       Misc
+------------------------------------------------------------------------------------------------------------------------------------------------------
+_th_: Thread first             _el_: Expand let                _cn_: Clean ns                  _cp_: Cycle privacy
+_tf_: Thread first all         _il_: Introduce let             _am_: Add missing libspec       _cc_: Cycle coll
+_tt_: Thread last              _ml_: Move to let
+_tl_: Thread last all          _ef_: Extract function
+_ua_: Unwind all               _rn_: Rename
+_uw_: Unwind thread            _mf_: Move formattedtextfield
+"
+
+  ("am" lsp-clojure-add-missing-libspec)
+  ("cc" lsp-clojure-cycle-coll)
+  ("cn" lsp-clojure-clean-ns)
+  ("cp" lsp-clojure-cycle-privacy)
+  ("ef" lsp-clojure-extract-function)
+  ("el" lsp-clojure-expand-let)
+  ("il" lsp-clojure-introduce-let)
+  ("mf" lsp-clojure-move-form)
+  ("ml" lsp-clojure-move-to-let)
+  ("rn" lsp-rename)
+  ("tf" lsp-clojure-thread-first-all)
+  ("th" lsp-clojure-thread-first)
+  ("tl" lsp-clojure-thread-last-all)
+  ("tt" lsp-clojure-thread-last)
+  ("ua" lsp-clojure-unwind-all)
+  ("uw" lsp-clojure-unwind-thread))
+
+(use-package lsp-mode
+  :hook ((clojure-mode . lsp)
+         (clojurec-mode . lsp)
+         (clojurescript-mode . lsp)
+         (java-mode . lsp)
+         (json-mode . lsp)
+         (elixir-mode . lsp)
+         (elm-mode . lsp)
+         (kotlin-mode . lsp)
+         (markdown-mode . lsp)
+         (python-mode . lsp)
+         (scala-mode . lsp)
+         (sh-mode . lsp)
+         (terraform-mode . lsp)
+         (web-mode . lsp)
+         (yaml-mode . lsp)
+         (xml-mode . lsp))
+
+  :bind (("M-?" . lsp-find-definition)
+         ;; ("M-/" . lsp-find-references)
+         ("M-'" . lsp-treemacs-call-hierarchy))
+
+  :config
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024))
+  (setq lsp-idle-delay 0.500)
+  (setq lsp-log-io nil)
+  (setq lsp-completion-provider :capf)
+  ;; add paths to your local installation of project mgmt tools, like lein
+  (setenv "PATH" (concat "/usr/local/bin" path-separator (getenv "PATH")))
+  (dolist (m '(clojure-mode
+               clojurec-mode
+               clojurescript-mode
+               clojurex-mode))
+    (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+
+  ;; Optional: In case `clojure-lsp` is not in your PATH
+  (setq lsp-clojure-server-command '("bash" "-c" "clojure-lsp"))
+
+  :custom
+  ;; turn this on to capture client/server comms before
+  ;; submitting bug reports with `lsp-workspace-show-log`
+  (lsp-log-io t)
+  (lsp-lens-enable t)
+  (lsp-signature t)
+  (lsp-eldoc-enable-hover t)
+  (lsp-enable-indentation t)
+  (lsp-enable-folding t)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-idle-delay .01)
+  (lsp-keymap-prefix nil))
+
+(use-package lsp-ui
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-doc-position 'bottom)
+  (lsp-ui-doc-show))
+
 (global-set-key [f1] 'delete-window)
 (global-set-key [f2] 'split-window-horizontally)
 
