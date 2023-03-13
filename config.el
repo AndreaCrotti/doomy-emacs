@@ -3,39 +3,10 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+(add-to-list 'load-path (file-name-directory (buffer-file-name)))
+(require 'functions)
+
 ;; helper functions
-(defun portal.api/open ()
-  (interactive)
-  (cider-nrepl-sync-request:eval
-   "(do (ns dev) (def portal ((requiring-resolve 'portal.api/open) {:theme :portal.colors/solarized-dark})) (add-tap (requiring-resolve 'portal.api/submit)))"))
-
-(defun portal.api/clear ()
-  (interactive)
-  (cider-nrepl-sync-request:eval "(portal.api/clear)"))
-
-(defun portal.api/close ()
-  (interactive)
-  (cider-nrepl-sync-request:eval "(portal.api/close)"))
-
-(defun ca-next-defun ()
-  (interactive)
-  (end-of-defun 2)
-  (beginning-of-defun 1))
-
-(defun ca-prev-defun ()
-  (interactive)
-  (beginning-of-defun))
-
-(defun vpn-up ()
-  (interactive)
-  (async-shell-command "sudo systemctl start wg-quick@vpn"))
-
-(defun vpn-down ()
-  (interactive)
-  (async-shell-command "sudo systemctl stop wg-quick@vpn"))
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Andrea Crotti"
       user-mail-address "andrea.crotti.0@gmail.com")
 
@@ -104,31 +75,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-(defun set-font-with-size (size)
-  (set-frame-font
-   (format "-CTDB-Fira Code-normal-normal-normal-*-%s-*-*-*-m-0-iso10646-1"
-           size)))
-
-(when (display-graphic-p)
-  (defun set-font-size (&optional _)
-    (interactive)
-    (let ((new-size
-           (cond
-            ;; external 1k monitor
-            ((equal 1920 (x-display-pixel-width)) 12)
-            ;; internal 4k monitor
-            ((equal 3840 (x-display-pixel-width)) 28)
-            ;; external 4k monitor
-            ((equal 7680 (x-display-pixel-width)) 18)
-            (t 24))))
-
-      (message "changing the font size to %s" new-size)
-      (set-font-with-size new-size)))
-
-  ;; not seems to do exactly what needed really, not just called when moving to a different monitor
-  ;; (add-hook 'window-size-change-functions 'set-font-size)
-  (set-font-size))
 
 (global-subword-mode 1)
 
@@ -297,6 +243,8 @@
   (org-roam-setup)
   (require 'org-roam-protocol))
 
+(directory-file-name (buffer-file-name))
+
 (use-package org-roam-ui
   :config
   (setq org-roam-ui-sync-theme t
@@ -308,3 +256,5 @@
 (global-set-key [f2] 'split-window-horizontally)
 
 (global-unset-key (kbd "C-z"))
+
+(set-font-size-from-screen)
