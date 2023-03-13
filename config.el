@@ -5,6 +5,7 @@
 
 (add-to-list 'load-path (file-name-directory (buffer-file-name)))
 (require 'functions)
+(require 'aliases)
 
 ;; helper functions
 (setq user-full-name "Andrea Crotti"
@@ -103,17 +104,17 @@
 
 (setq forge-owned-accounts '(("AndreaCrotti")))
 
-;; (setq-hook! org-mode
-;;   prettify-symbols-alist '(("#+end_quote" . "”")
-;;                            ("#+END_QUOTE" . "”")
-;;                            ("#+begin_quote" . "“")
-;;                            ("#+BEGIN_QUOTE" . "“")
-;;                            ("#+end_src" . "«")
-;;                            ("#+END_SRC" . "«")
-;;                            ("#+begin_src" . "»")
-;;                            ("#+BEGIN_SRC" . "»")
-;;                            ("#+name:" . "»")
-;;                            ("#+NAME:" . "»")))
+(setq-hook! org-mode
+  prettify-symbols-alist '(("#+end_quote" . "”")
+                           ("#+END_QUOTE" . "”")
+                           ("#+begin_quote" . "“")
+                           ("#+BEGIN_QUOTE" . "“")
+                           ("#+end_src" . "«")
+                           ("#+END_SRC" . "«")
+                           ("#+begin_src" . "»")
+                           ("#+BEGIN_SRC" . "»")
+                           ("#+name:" . "»")
+                           ("#+NAME:" . "»")))
 
 (setq display-line-numbers-type 'relative)
 
@@ -258,3 +259,5 @@
 (global-unset-key (kbd "C-z"))
 
 (set-font-size-from-screen)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
