@@ -102,8 +102,6 @@
 
 (setq doom-scratch-initial-major-mode 'lisp-interaction-mode)
 
-(setq forge-owned-accounts '(("AndreaCrotti")))
-
 (setq-hook! org-mode
   prettify-symbols-alist '(("#+end_quote" . "”")
                            ("#+END_QUOTE" . "”")
@@ -294,6 +292,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
          (python-mode . lsp)
          (scala-mode . lsp)
          (sh-mode . lsp)
+         (typescript-mode . lsp)
          (terraform-mode . lsp)
          (web-mode . lsp)
          (yaml-mode . lsp)
