@@ -366,3 +366,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   :hook ((prog-mode . hs-minor-mode))
   :bind
   (("C-<tab>" . hs-toggle-hiding)))
+
+(use-package wakatime-mode
+  :config
+  (global-wakatime-mode t))
