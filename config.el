@@ -361,3 +361,8 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   (add-hook 'ejc-sql-minor-mode-hook
             (lambda ()
               (company-mode t))))
+
+(use-package hideshow
+  :hook ((prog-mode . hs-minor-mode))
+  :bind
+  (("C-<tab>" . hs-toggle-hiding)))
