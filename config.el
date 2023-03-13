@@ -3,7 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-(add-to-list 'load-path (file-name-directory (buffer-file-name)))
+(add-to-list 'load-path (file-truename "~/.config/doom"))
 (require 'functions)
 (require 'aliases)
 
@@ -243,8 +243,6 @@
   :config
   (org-roam-setup)
   (require 'org-roam-protocol))
-
-(directory-file-name (buffer-file-name))
 
 (use-package org-roam-ui
   :config
