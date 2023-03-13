@@ -216,7 +216,8 @@
   :bind
   (("C-c l" . lsp-clojure-refactor-menu/body))
   :init
-  (add-hook 'clojure-mode-hook #'subword-mode))
+  (add-hook 'clojure-mode-hook #'subword-mode)
+  (add-to-list 'auto-mode-alist '("\\.bb" . clojure-mode)))
 
 (use-package company
   :init (global-company-mode)
@@ -348,3 +349,15 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 (set-font-size-from-screen)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(use-package bhr
+  :commands (bhr-view-timesheet bhr-submit-multiple))
+
+(use-package ejc-sql
+  :custom
+  (clomacs-httpd-default-port 8090)
+  :config
+  (push 'ejc-company-backend company-backends)
+  (add-hook 'ejc-sql-minor-mode-hook
+            (lambda ()
+              (company-mode t))))

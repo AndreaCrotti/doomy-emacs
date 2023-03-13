@@ -100,3 +100,19 @@
 (package! rg)
 
 (package! org-roam-ui)
+
+(package! bhr
+  :recipe (:host github :repo "elken/bhr.el"))
+
+(package! adoc-mode)
+
+(package! exercism-modern
+  :recipe (:files (:defaults "icons")
+           :host github :repo "elken/exercism-modern"))
+
+(package! litable
+  :recipe (:host github :repo "Fuco1/litable"))
+
+(package! ejc-sql)
+
+(package! company-quickhelp)
