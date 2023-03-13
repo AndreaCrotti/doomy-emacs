@@ -370,3 +370,16 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 (use-package wakatime-mode
   :config
   (global-wakatime-mode t))
+
+(use-package treemacs
+  :custom
+  (treemacs-tag-follow-mode nil)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-git-mode nil)
+  (treemacs-indent-guide-mode t)
+  (treemacs-git-commit-diff-mode nil))
+
+(use-package rg
+  :custom
+  (rg-command-line-flags '("--max-columns 150" "--max-columns-preview")))
