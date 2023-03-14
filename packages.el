@@ -116,5 +116,3 @@
 (package! ejc-sql)
 
 (package! company-quickhelp)
-
-(unpin! magit forge)

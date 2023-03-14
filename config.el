@@ -391,3 +391,6 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
               (outline-minor-mode t)
               (local-set-key (kbd "<tab>") 'outline-toggle-children)
               (setq outline-regexp "#+"))))
+
+(use-package imenu-anywhere
+  :bind (("<f5>" . imenu-anywhere)))
