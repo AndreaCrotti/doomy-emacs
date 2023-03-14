@@ -335,7 +335,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 (use-package lsp-ui
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (setq lsp-ui-sideline-enable t)
+  (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-sideline-show-hover t)
   (setq lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-show))
@@ -381,4 +381,13 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   :custom
   (rg-command-line-flags '("--max-columns 150" "--max-columns-preview")))
 
-(set-font-size-from-screen)
+(use-package restclient
+  :init
+  (add-to-list 'auto-mode-alist '("\\.rest" . restclient-mode))
+  :config
+  (add-hook 'restclient-mode-hook 'outline-minor-mode)
+  (add-hook 'restclient-mode-hook
+            (lambda ()
+              (outline-minor-mode t)
+              (local-set-key (kbd "<tab>") 'outline-toggle-children)
+              (setq outline-regexp "#+"))))
