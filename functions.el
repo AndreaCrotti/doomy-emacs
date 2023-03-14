@@ -32,25 +32,25 @@
   (interactive)
   (async-shell-command "sudo systemctl stop wg-quick@vpn"))
 
-
 (defun set-font-with-size (size)
   (set-frame-font
    (format "-CTDB-Fira Code-normal-normal-normal-*-%s-*-*-*-m-0-iso10646-1"
            size)))
 
-(defun set-font-size-from-screen ()
-  (when (display-graphic-p)
-    (defun set-font-size (&optional _)
-      (interactive)
-      (let ((new-size
-             (cond
-              ;; external 1k monitor
-              ((equal 1920 (x-display-pixel-width)) 12)
-              ;; internal 4k monitor
-              ((equal 3840 (x-display-pixel-width)) 28)
-              ;; external 4k monitor
-              ((> (x-display-pixel-width) 7680) 18)
-              (t 24))))
+(when (display-graphic-p)
+  (defun set-font-size (&optional _)
+    (interactive)
+    (let ((new-size
+           (cond
+            ;; external 1k monitor
+            ((equal 1920 (x-display-pixel-width)) 12)
+            ;; internal 4k monitor
+            ((equal 3840 (x-display-pixel-width)) 28)
+            ;; external 4k monitor
+            ((> (x-display-pixel-width) 7680) 18)
+            (t 24))))
 
-        (message "changing the font size to %s" new-size)
-        (set-font-with-size new-size)))))
+      (message "changing the font size to %s" new-size)
+      (set-font-with-size new-size)))
+
+  (set-font-size))

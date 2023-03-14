@@ -345,8 +345,6 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 
 (global-unset-key (kbd "C-z"))
 
-(set-font-size-from-screen)
-
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (use-package bhr
@@ -382,3 +380,5 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 (use-package rg
   :custom
   (rg-command-line-flags '("--max-columns 150" "--max-columns-preview")))
+
+(set-font-size-from-screen)
