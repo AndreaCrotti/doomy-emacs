@@ -33,6 +33,7 @@
   (async-shell-command "sudo systemctl stop wg-quick@vpn"))
 
 (defun set-font-with-size (size)
+  (interactive)
   (set-frame-font
    (format "-CTDB-Fira Code-normal-normal-normal-*-%s-*-*-*-m-0-iso10646-1"
            size)))

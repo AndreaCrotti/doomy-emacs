@@ -116,3 +116,9 @@
 (package! ejc-sql)
 
 (package! company-quickhelp)
+
+(package! flycheck-grammarly)
+
+(package! org-reveal)
+
+(package! ox-asciidoc)

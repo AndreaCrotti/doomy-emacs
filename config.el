@@ -250,6 +250,12 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
+(use-package ox-reveal
+  :custom
+  (org-reveal-root (file-truename "~/src/forks/reveal.js")))
+
+(use-package ox-asciidoc)
+
 (defhydra lsp-clojure-refactor-menu (:color blue :hint nil)
   "
 Threading                      Code Manip                      Namespace                       Misc
@@ -394,3 +400,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 
 (use-package imenu-anywhere
   :bind (("<f5>" . imenu-anywhere)))
+
+(use-package flycheck-grammarly
+  :custom
+  (flycheck-grammarly-check-time 0.8))
