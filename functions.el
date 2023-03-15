@@ -47,7 +47,7 @@
             ;; internal 4k monitor
             ((equal 3840 (x-display-pixel-width)) 28)
             ;; external 4k monitor
-            ((> (x-display-pixel-width) 7680) 18)
+            ((>= (x-display-pixel-width) 7680) 18)
             (t 24))))
 
       (message "changing the font size to %s" new-size)
