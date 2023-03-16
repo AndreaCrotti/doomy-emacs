@@ -168,6 +168,10 @@
    ("M-F" . sp-forward-symbol)
    ("M-B" . sp-backward-symbol)))
 
+(use-package smartparens-config
+  :ensure smartparens
+  :config (progn (show-smartparens-global-mode t)))
+
 (use-package windmove
   :init (windmove-default-keybindings 'shift))
 
@@ -404,3 +408,13 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 (use-package flycheck-grammarly
   :custom
   (flycheck-grammarly-check-time 0.8))
+
+(use-package guru-mode
+  :custom
+  (guru-warn-only t)
+  :config
+  (guru-global-mode t))
+
+(use-package idle-highlight-mode
+  :diminish idle-highlight-mode
+  :config (add-hook 'prog-mode-hook 'idle-highlight-mode))

@@ -122,3 +122,18 @@
 (package! org-reveal)
 
 (package! ox-asciidoc)
+
+(package! vega-view)
+
+(package! yasnippet-snippets)
+
+
+(package! idle-highlight-mode)
+
+(package! guru-mode)
+
+(package! graphviz-dot-mode)
+
+(package! fancy-narrow)
+
+(package! browse-at-remote)
