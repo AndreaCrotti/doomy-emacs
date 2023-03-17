@@ -137,3 +137,5 @@
 (package! fancy-narrow)
 
 (package! browse-at-remote)
+
+(package! elein)
