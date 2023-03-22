@@ -126,7 +126,7 @@
 
 (setq gac-custom-interval 0.5)
 
-(use-package projectile
+(use-package! projectile
   :diminish projectile
   :config
   (projectile-global-mode)
@@ -144,7 +144,7 @@
   (projectile-completion-system 'default)
   (projectile-switch-project-action 'projectile-find-file))
 
-(use-package smartparens
+(use-package! smartparens
   :config
   (smartparens-global-mode nil)
   (smartparens-global-strict-mode t)
@@ -168,14 +168,13 @@
    ("M-F" . sp-forward-symbol)
    ("M-B" . sp-backward-symbol)))
 
-(use-package smartparens-config
-  :ensure smartparens
+(use-package! smartparens-config
   :config (progn (show-smartparens-global-mode t)))
 
-(use-package windmove
+(use-package! windmove
   :init (windmove-default-keybindings 'shift))
 
-(use-package autorevert
+(use-package! autorevert
   :config
   (setq auto-revert-interval 1)
   (global-auto-revert-mode))
@@ -183,11 +182,11 @@
 (global-set-key (kbd "M-p") 'ca-prev-defun)
 (global-set-key (kbd "M-n") 'ca-next-defun)
 
-;; (use-package browse-kill-ring
+;; (use-package! browse-kill-ring
 ;;   :config
 ;;   (browse-kill-ring-default-keybindings))
 
-(use-package cider
+(use-package! cider
   :bind (("C-<f5>" . cider-test-run-test))
   :config
   (setq cider-font-lock-dynamically '(macro core function var)
@@ -208,11 +207,11 @@
   (nrepl-log-messages t)
   (cider-auto-test-mode t))
 
-(use-package neil
+(use-package! neil
   :custom
   (neil-inject-dep-to-project-p t))
 
-(use-package clojure-mode
+(use-package! clojure-mode
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :bind
@@ -221,7 +220,7 @@
   (add-hook 'clojure-mode-hook #'subword-mode)
   (add-to-list 'auto-mode-alist '("\\.bb" . clojure-mode)))
 
-(use-package company
+(use-package! company
   :init (global-company-mode)
   :custom
   (company-tooltip-align-annotations t)
@@ -229,7 +228,7 @@
   (company-idle-delay 0.1)
   (company-show-numbers t))
 
-(use-package org-roam
+(use-package! org-roam
   :after org
   :init
   (setq org-roam-v2-ack t)
@@ -247,18 +246,18 @@
   (org-roam-setup)
   (require 'org-roam-protocol))
 
-(use-package org-roam-ui
+(use-package! org-roam-ui
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(use-package ox-reveal
+(use-package! ox-reveal
   :custom
   (org-reveal-root (file-truename "~/src/forks/reveal.js")))
 
-(use-package ox-asciidoc)
+(use-package! ox-asciidoc)
 
 (defhydra lsp-clojure-refactor-menu (:color blue :hint nil)
   "
@@ -289,7 +288,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   ("ua" lsp-clojure-unwind-all)
   ("uw" lsp-clojure-unwind-thread))
 
-(use-package lsp-mode
+(use-package! lsp-mode
   :hook ((clojure-mode . lsp)
          (clojurec-mode . lsp)
          (clojurescript-mode . lsp)
@@ -342,7 +341,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   (lsp-idle-delay .01)
   (lsp-keymap-prefix nil))
 
-(use-package lsp-ui
+(use-package! lsp-ui
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (setq lsp-ui-sideline-enable nil)
@@ -357,10 +356,10 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(use-package bhr
+(use-package! bhr
   :commands (bhr-view-timesheet bhr-submit-multiple))
 
-(use-package ejc-sql
+(use-package! ejc-sql
   :custom
   (clomacs-httpd-default-port 8090)
   :config
@@ -369,16 +368,16 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
             (lambda ()
               (company-mode t))))
 
-(use-package hideshow
+(use-package! hideshow
   :hook ((prog-mode . hs-minor-mode))
   :bind
   (("C-<tab>" . hs-toggle-hiding)))
 
-(use-package wakatime-mode
+(use-package! wakatime-mode
   :config
   (global-wakatime-mode t))
 
-(use-package treemacs
+(use-package! treemacs
   :custom
   (treemacs-tag-follow-mode nil)
   (treemacs-follow-mode t)
@@ -387,11 +386,11 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   (treemacs-indent-guide-mode t)
   (treemacs-git-commit-diff-mode nil))
 
-(use-package rg
+(use-package! rg
   :custom
   (rg-command-line-flags '("--max-columns 150" "--max-columns-preview")))
 
-(use-package restclient
+(use-package! restclient
   :init
   (add-to-list 'auto-mode-alist '("\\.rest" . restclient-mode))
   :config
@@ -402,19 +401,19 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
               (local-set-key (kbd "<tab>") 'outline-toggle-children)
               (setq outline-regexp "#+"))))
 
-(use-package imenu-anywhere
+(use-package! imenu-anywhere
   :bind (("<f5>" . imenu-anywhere)))
 
-(use-package flycheck-grammarly
+(use-package! flycheck-grammarly
   :custom
   (flycheck-grammarly-check-time 0.8))
 
-(use-package guru-mode
+(use-package! guru-mode
   :custom
   (guru-warn-only t)
   :config
   (guru-global-mode t))
 
-(use-package idle-highlight-mode
+(use-package! idle-highlight-mode
   :diminish idle-highlight-mode
   :config (add-hook 'prog-mode-hook 'idle-highlight-mode))

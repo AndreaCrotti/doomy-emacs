@@ -139,3 +139,5 @@
 (package! browse-at-remote)
 
 (package! elein)
+
+(package! know-your-http-well)
