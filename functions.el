@@ -48,10 +48,18 @@
             ;; internal 4k monitor
             ((equal 3840 (x-display-pixel-width)) 28)
             ;; external 4k monitor
-            ((>= (x-display-pixel-width) 7680) 18)
+            ((>= (x-display-pixel-width) 7680) 20)
             (t 24))))
 
       (message "changing the font size to %s" new-size)
       (set-font-with-size new-size)))
 
   (set-font-size))
+
+(defun ca-err-switch()
+  "switch on/off error debugging"
+  (interactive)
+  (if debug-on-error
+      (setq debug-on-error nil)
+    (setq debug-on-error t))
+  (message "debug-on-error now %s" debug-on-error))

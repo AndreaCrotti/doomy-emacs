@@ -226,7 +226,9 @@
   (company-tooltip-align-annotations t)
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.1)
-  (company-show-numbers t))
+  (company-show-numbers t)
+  :bind
+  (("TAB" . company-indent-or-complete-common)))
 
 (use-package! org-roam
   :after org
@@ -312,9 +314,7 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
          ("M-'" . lsp-treemacs-call-hierarchy))
 
   :config
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024))
-  (setq lsp-idle-delay 0.500)
+  (setq lsp-idle-delay 0.200)
   (setq lsp-log-io nil)
   (setq lsp-completion-provider :capf)
   ;; add paths to your local installation of project mgmt tools, like lein
@@ -339,7 +339,8 @@ _uw_: Unwind thread            _mf_: Move formattedtextfield
   (lsp-enable-folding t)
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-idle-delay .01)
-  (lsp-keymap-prefix nil))
+  (lsp-keymap-prefix nil)
+  (lsp-enable-snippet nil))
 
 (use-package! lsp-ui
   :config
